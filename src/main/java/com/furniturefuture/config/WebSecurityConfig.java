@@ -1,8 +1,10 @@
 package com.furniturefuture.config;
 
+import com.furniturefuture.entity.Product;
 import com.furniturefuture.entity.Role;
 import com.furniturefuture.entity.User;
 import com.furniturefuture.repository.RoleRepository;
+import com.furniturefuture.service.ProductService;
 import com.furniturefuture.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     UserService userService;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    ProductService productService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -37,11 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/registration").not().fullyAuthenticated()
 
-                .antMatchers("/admin").hasRole("ADMIN")
-
                 .antMatchers("/news").hasRole("USER")
+                .antMatchers("/product/all").permitAll()
+                
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/admin/product/add").hasRole("ADMIN")
 
-                .antMatchers("/admin/regnewadmin").hasRole("SUPERADMIN")
+                .antMatchers("/admin/registration").hasRole("SUPERADMIN")
 
                 .antMatchers("/", "/resources/**").permitAll()
 
@@ -65,16 +71,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
 
-        //save in db basic roles for further usage
-        //i know i should create roleService but...
-        roleRepository.save(new Role(1L,"ROLE_USER"));
-        roleRepository.save(new Role(2L,"ROLE_ADMIN"));
-        roleRepository.save(new Role(3L,"ROLE_SUPERADMIN"));
+//        save in db basic roles for further usage
+//        roleRepository.save(new Role(1L,"ROLE_USER"));
+//        roleRepository.save(new Role(2L,"ROLE_ADMIN"));
+//        roleRepository.save(new Role(3L,"ROLE_SUPERADMIN"));
+//        roleRepository.save(new Role(4L,"ROLE_CONTENTMAKER"));
+//
+//        User superadmin = new User();
+//        superadmin.setUsername("superadmin");
+//        superadmin.setPassword("adminpassword");
+//
+//        userService.saveSuperAdmin(superadmin);
 
-        User superadmin = new User();
-        superadmin.setUsername("superadmin");
-        superadmin.setPassword("adminpassword");
-
-        userService.saveSuperAdmin(superadmin);
     }
 }
