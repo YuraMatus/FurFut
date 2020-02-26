@@ -10,7 +10,6 @@
     <meta charset="utf-8">
     <title>Log in with your account</title>
     <link rel="stylesheet" href="../recources/css/login.css">
-
 </head>
 
 <body>
@@ -30,8 +29,6 @@
                 <h4><a href="/registration">Sign Up</a></h4>
             </div>
         </form>
-
-
     </div>
 </div>
 
