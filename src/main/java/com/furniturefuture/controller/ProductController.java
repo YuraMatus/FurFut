@@ -45,4 +45,8 @@ public class ProductController {
         model.addAttribute("allProducts", productService.findAllProducts());
         return "products";
     }
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
 }

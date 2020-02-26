@@ -38,25 +38,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-
+//                .antMatchers("/", "/resources/*", "/product/all", "/test").permitAll()
+//
+//                .antMatchers("/registration").not().fullyAuthenticated()
+//
+//                .antMatchers("/admin", "/admin/product/add").hasRole("ADMIN")
+//
+//                .antMatchers("/admin/registration").hasRole("SUPERADMIN")
+//
+//
+//                .anyRequest().authenticated()
+//                .and()
+//
+//                .formLogin()
+//                .loginPage("/login")
+//
+//                .defaultSuccessUrl("/", false)
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll()
+//                .logoutSuccessUrl("/");
+                //Доступ только для не зарегистрированных пользователей
                 .antMatchers("/registration").not().fullyAuthenticated()
-
+                //Доступ только для пользователей с ролью Администратор
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/news").hasRole("USER")
-                .antMatchers("/product/all").permitAll()
-                
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/admin/product/add").hasRole("ADMIN")
-
-                .antMatchers("/admin/registration").hasRole("SUPERADMIN")
-
+                //Доступ разрешен всем пользователей
                 .antMatchers("/", "/resources/**").permitAll()
-
-                .anyRequest().authenticated()
+                //Все остальные страницы требуют аутентификации
                 .and()
-
+                //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
-
+                //Перенарпавление на главную страницу после успешного входа
                 .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
